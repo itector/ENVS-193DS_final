@@ -1,0 +1,25 @@
+---
+title: "ENVS-193DS_seed-counts"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: yeti
+editor: visual
+execute: 
+  message: false
+  warning: false
+editor: visual
+editor: visual
+---
+
+## Seed Counts
+
+# Introduction
+
+# Methods
+
+# Results
+
+# Works Cited
