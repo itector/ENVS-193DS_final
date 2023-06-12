@@ -48,6 +48,25 @@ seed_count <- read_csv(here("data", "shrubstudy_community_flower_counts.ms.data.
   clean_names()
 ```
 
+```{r}
+# create a data visualization of missing data in seed_count
+gg_miss_var(seed_count)
+```
+
+```{r}
+# calculate pearson's r for numerical values only
+seed_count_cor <- seed_count %>% 
+  select(shrub_num:counts) %>% 
+  cor(use = "everything", method = "pearson")
+
+# creating a correlation plot
+corrplot(seed_count_cor,
+         # change the shape of what's in the cells
+         method = "ellipse",
+         addCoef.col = "black"
+         )
+```
+
 # Results
 
 # Works Cited
