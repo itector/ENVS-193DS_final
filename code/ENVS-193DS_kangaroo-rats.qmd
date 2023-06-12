@@ -17,8 +17,6 @@ editor: visual
 
 # Introduction
 
-hi i am testing thi sout
-
 # Methods
 
 # Results
@@ -27,4 +25,4 @@ these are the results portion
 
 # Works Cited
 
-this is the works cited portion for what we reference
+this is the works cited portion for what we refe
