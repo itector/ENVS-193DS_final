@@ -82,6 +82,26 @@ detach(dt1)
 
 # Methods
 
+```{r}
+# should haves
+library(tidyverse)
+library(here)
+library(janitor)
+library(ggeffects)
+library(performance)
+library(naniar)
+library(flextable)
+library(car)
+library(broom)
+library(corrplot)
+library(AICcmodavg)
+library(GGally)
+# would be nice to have
+library(MuMIn)
+#library(equatiomatic)
+library(corrplot)
+```
+
 # Results
 
 these are the results portion

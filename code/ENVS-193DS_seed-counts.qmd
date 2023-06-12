@@ -22,6 +22,32 @@ testing
 
 # Methods
 
+```{r}
+# should haves
+library(tidyverse)
+library(here)
+library(janitor)
+library(ggeffects)
+library(performance)
+library(naniar)
+library(flextable)
+library(car)
+library(broom)
+library(corrplot)
+library(AICcmodavg)
+library(GGally)
+# would be nice to have
+library(MuMIn)
+#library(equatiomatic)
+library(corrplot)
+```
+
+```{r}
+seed_count <- read_csv(here("data", "shrubstudy_community_flower_counts.ms.data.csv")) %>% 
+  # make the column names cleaner
+  clean_names()
+```
+
 # Results
 
 # Works Cited
