@@ -1,0 +1,65 @@
+---
+title: "scratch-paper"
+format: html
+editor: visual
+---
+
+```{r}
+# Package ID: knb-lter-sev.208.102459 Cataloging System:https://pasta.lternet.edu.
+# Data set title: Effects of Kangaroo Rat Mounds on Seed Banks of Grass and Shrublands at the Sevilleta National Wildlife Refuge, New Mexico (2001).
+# Data set creator:  Terri Koontz - SEV LTER 
+# Data set creator:  Heather Simpson - SEV LTER 
+# Contact:    - Information Manager LTER Network Office  - tech-support@lternet.edu
+# Contact:  Information Manager Sevilleta LTER -  SEV LTER  - data-use@sevilleta.unm.edu
+# Metadata Link: https://portal.lternet.edu/nis/metadataviewer?packageid=knb-lter-sev.208.102459
+# Stylesheet v2.11 for metadata conversion into program: John H. Porter, Univ. Virginia, jporter@virginia.edu 
+
+inUrl1  <- "https://pasta.lternet.edu/package/data/eml/knb-lter-sev/208/102459/a063411c03e4baef6707862466685442" 
+infile1 <- tempfile()
+try(download.file(inUrl1,infile1,method="curl"))
+if (is.na(file.size(infile1))) download.file(inUrl1,infile1,method="auto")
+
+                   
+ dt1 <-read.csv(infile1,header=F 
+          ,skip=1
+            ,sep=","  
+        , col.names=c(
+                    "mnd",     
+                    "dir",     
+                    "loc",     
+                    "species",     
+                    "seeds"    ), check.names=TRUE)
+               
+unlink(infile1)
+		    
+# Fix any interval or ratio columns mistakenly read in as nominal and nominal columns read as numeric or dates read as strings
+                
+if (class(dt1$mnd)!="factor") dt1$mnd<- as.factor(dt1$mnd)
+if (class(dt1$dir)!="factor") dt1$dir<- as.factor(dt1$dir)
+if (class(dt1$loc)!="factor") dt1$loc<- as.factor(dt1$loc)
+if (class(dt1$species)!="factor") dt1$species<- as.factor(dt1$species)
+if (class(dt1$seeds)=="factor") dt1$seeds <-as.numeric(levels(dt1$seeds))[as.integer(dt1$seeds) ]               
+if (class(dt1$seeds)=="character") dt1$seeds <-as.numeric(dt1$seeds)
+                
+# Convert Missing Values to NA for non-dates
+                
+
+
+# Here is the structure of the input data frame:
+str(dt1)                            
+attach(dt1)                            
+# The analyses below are basic descriptions of the variables. After testing, they should be replaced.                 
+
+summary(mnd)
+summary(dir)
+summary(loc)
+summary(species)
+summary(seeds) 
+                # Get more details on character variables
+                 
+summary(as.factor(dt1$mnd)) 
+summary(as.factor(dt1$dir)) 
+summary(as.factor(dt1$loc)) 
+summary(as.factor(dt1$species))
+detach(dt1)               
+```
