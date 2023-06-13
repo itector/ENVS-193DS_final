@@ -43,7 +43,7 @@ library(corrplot)
 ```
 
 ```{r}
-seed_count <- read_csv(here("data", "shrubstudy_community_flower_counts.ms.data.csv")) %>% 
+seed_count <- read_csv(here("data", "shrubstudy_seed_ctwt.ms.data.csv")) %>% 
   # make the column names cleaner
   clean_names()
 ```
@@ -54,10 +54,15 @@ gg_miss_var(seed_count)
 ```
 
 ```{r}
+seed_count_subset <- seed_count %>% 
+  drop_na(dist_fr_shr, wt_seeds_mg, nr_seeds, nr_infl_coll)
+```
+
+```{r}
 # calculate pearson's r for numerical values only
-seed_count_cor <- seed_count %>% 
-  select(shrub_num:counts) %>% 
-  cor(use = "everything", method = "pearson")
+seed_count_cor <- seed_count_subset %>% 
+  select(shrub_num,plant_nr,dist_fr_shr,total_nr_infl,nr_infl_coll,nr_seeds,wt_seeds_mg) %>% 
+  cor(method = "pearson")
 
 # creating a correlation plot
 corrplot(seed_count_cor,
@@ -65,6 +70,45 @@ corrplot(seed_count_cor,
          method = "ellipse",
          addCoef.col = "black"
          )
+```
+
+```{r}
+# create a pairs plot (not correlation) for all of the variables
+seed_count_subset %>% 
+  select(shrub_num,plant_nr,dist_fr_shr,total_nr_infl,nr_infl_coll,nr_seeds,wt_seeds_mg) %>% 
+  ggpairs()
+```
+
+```{r}
+# making a null model, which is represented by a one and we only want it from the plant_subset dataset
+null <- lm(nr_seeds ~ 1, data = seed_count_subset)
+# now we include all of the variables
+full <- lm(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count)
+```
+
+```{r}
+# create a diagnostic plot for full model
+par(mfrow = c(2,2))
+plot(full)
+
+```
+
+```{r}
+check_normality(full)
+check_heteroscedasticity(full)
+```
+
+```{r}
+# transform data by taking the log of it
+full_log <- lm(log(nr_seeds) ~ species + treatment + total_nr_infl, data = seed_count_subset)
+
+null_log <- lm(log(nr_seeds) ~ 1, data = seed_count)
+
+# check transformed data for normality and const variance
+par(mfrow = c(2,2))
+plot(full_log)
+check_normality(full_log)
+check_heteroscedasticity(full_log)
 ```
 
 # Results
