@@ -39,8 +39,12 @@ library(AICcmodavg)
 library(GGally)
 # would be nice to have
 library(MuMIn)
+library(DHARMa)
 #library(equatiomatic)
 library(corrplot)
+library(MASS) # have to read this in before tidyverse 
+library(lme4)
+library(glmmTMB)
 ```
 
 ```{r}
@@ -56,7 +60,7 @@ ggplot(seed_count, aes(x = nr_seeds)) +
 
 ```{r}
 seed_count %>% 
-  select(!treatment) %>% 
+  select(!species) %>% 
   ggpairs()
 ```
 
@@ -64,69 +68,67 @@ seed_count %>%
 skim(seed_count)
 ```
 
+## Building Models
+
 ```{r}
-seed_count_subset <- drop_na(seed_count) # %>% 
-  #drop_na(dist_fr_shr, wt_seeds_mg, nr_seeds, nr_infl_coll)
+# linear model, we know this is wrong
+seedmod1 <- lm(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count)
+
+# generalized linear model with Poisson distribution
+seedmod2 <- glm(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count, family = "poisson")
+seedmod2.a <- glm(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count, family = "poisson")
+
+# generalized linear model with negative binomial distribution
+seedmod3 <- glm.nb(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count)
+seedmod3.a <- glmmTMB(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count, family = "nbinom2")
+
+# generalized linear model with Poisson distribution and random effect of site
+seedmod4 <- glmer(nr_seeds ~ species + total_nr_infl + (1|treatment), data = seed_count, family = "poisson")
+seedmod4.a <- glmmTMB(nr_seeds ~ species + total_nr_infl + (1|treatment), data = seed_count, family = "poisson")
+
+# generalized linear model with negative binomial distribution and random effect of site
+seedmod5 <- glmer.nb(nr_seeds ~ species + total_nr_infl + (1|treatment), data = seed_count)
+seedmod5.a <- glmmTMB(nr_seeds ~ species + total_nr_infl + (1|treatment), data = seed_count, family = "nbinom2")
 ```
 
 ```{r}
-# calculate pearson's r for numerical values only
-seed_count_cor <- seed_count_subset %>% 
-  select(shrub_num,plant_nr,dist_fr_shr,total_nr_infl,nr_infl_coll,nr_seeds,wt_seeds_mg) %>% 
-  cor(method = "pearson")
+# check diagnostics
+plot(simulateResiduals(seedmod1)) # bad
 
-# creating a correlation plot
-corrplot(seed_count_cor,
-         # change the shape of what's in the cells
-         method = "ellipse",
-         addCoef.col = "black"
-         )
+plot(simulateResiduals(seedmod2)) # bad
+
+plot(simulateResiduals(seedmod3)) # ok?
+
+plot(simulateResiduals(seedmod4)) # bad
+
+plot(simulateResiduals(seedmod5)) # bad/ok?
 ```
 
 ```{r}
-# create a pairs plot (not correlation) for all of the variables
-seed_count_subset %>% 
-  select(shrub_num,plant_nr,dist_fr_shr,total_nr_infl,nr_infl_coll,nr_seeds,wt_seeds_mg) %>% 
-  ggpairs()
+MuMIn::model.sel(seedmod1, seedmod2, seedmod3, seedmod4, seedmod5)
 ```
 
 ```{r}
-# make a new data set with relevant variables
-seed_count_rel <- seed_count %>% 
-  select(nr_seeds, treatment, species, total_nr_infl) %>% 
-  drop_na(nr_seeds, treatment, species, total_nr_infl)
+seedmod3
 ```
 
 ```{r}
-# making a null model, which is represented by a one and we only want it from the plant_subset dataset
-null <- lm(nr_seeds ~ 1, data = seed_count_rel)
-# now we include all of the variables
-full <- lm(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count_rel)
+summary(seedmod3)
 ```
 
 ```{r}
-# create a diagnostic plot for full model
-par(mfrow = c(2,2))
-plot(full)
-
+confint(seedmod3)
 ```
 
 ```{r}
-check_normality(full)
-check_heteroscedasticity(full)
+# adjusted R2
+r.squaredGLMM(seedmod3)
 ```
 
 ```{r}
-# transform data by taking the log of it
-full_log <- lm(log(nr_seeds) ~ species + treatment + total_nr_infl, data = seed_count_rel)
-
-null_log <- lm(log(nr_seeds) ~ 1, data = seed_count_rel)
-
-# check transformed data for normality and const variance
-par(mfrow = c(2,2))
-plot(full_log)
-check_normality(full_log)
-check_heteroscedasticity(full_log)
+# model object in table
+seedmod3 %>% 
+  as_flextable()
 ```
 
 # Results
