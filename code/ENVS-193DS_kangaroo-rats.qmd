@@ -13,11 +13,11 @@ execute:
 editor: visual
 ---
 
-# Kangaroo Rats
+# Problem 1. Kangaroo Rats
 
-# Introduction
+## 1. Introduction
 
-# Methods
+## 1. Methods
 
 ```{r}
 # should haves
@@ -106,10 +106,26 @@ plot(simulateResiduals(kangaroo4)) # bad
 plot(simulateResiduals(kangaroo5)) # bad/ok?
 ```
 
-# Results
+## 1. Results
 
 these are the results portion
 
-# Works Cited
+### 1. Works Cited
 
-this is the works cited portion for what we refe
+# Problem 2. Seed Counts
+
+## 2. Introduction
+
+In the realm of biological research, understanding the factors that influence seed count is of great significance as it sheds light on the reproductive success and fitness of plant species. In the alpine tundra, results of climate change have included 'shrubification'- an increase in woody shrubs, which affects on the vegetative community are in need of inspection([Mod & Luoto, 2016](https://iopscience.iop.org/article/10.1088/1748-9326/11/12/124028/meta)). This analysis aims to investigate how seed count varies in relation to three key variables: plot type (shrub or open), plant species, and the total number of inflorescences, and to see if a simpler model explaining seed count can be derived. Previous studies have shown shrubs to increase seed bank count in desert areas and that different plant species display varying seed production patterns, where trade-offs may occur between larger seed mass and seed count, which are interesting points to compare to the alpine tundra environment we studied([Filazzola et. al., 2019](https://doi.org/10.1371/journal.pone.0215988); [Paul-Victor & Turnbull, 2009](https://doi.org/10.1371/journal.pone.0006917)). Our null hypothesis is that none of the variables observed, plot type, species, nor number of inflorescences, will have an effect on seed count, and our alternative hypothesis is that at least one of these variables will have a correlation with seed count.
+
+## 2. Methods
+
+## 2. Results
+
+### 2. Works Cited
+
+1.  Filazzola, A., Liczner, A. R., Westphal, M., & Lortie, C. J. (2019). Shrubs indirectly increase desert seedbanks through facilitation of the plant community. PloS one, 14(4), e0215988. https://doi.org/10.1371/journal.pone.0215988
+
+2.  Mod, H. K., & Luoto, M. (2016). Arctic shrubification mediates the impacts of warming climate on changes to tundra vegetation. Environmental Research Letters, 11(12). DOI: 10.1088/1748-9326/11/12/124028
+
+3.  Paul-Victor, C., & Turnbull, L. A. (2009). The effect of growth conditions on the seed size/number trade-off. PloS one, 4(9), e6917. https://doi.org/10.1371/journal.pone.0006917
