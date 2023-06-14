@@ -60,7 +60,7 @@ This data package contains data on individual and community flowering phenology,
 -   Time period
     -   Begin: 2019-07-09
     -   End: 2021-09-08
--   Alternate Identifier: doi:10.6073/pasta/edc4ab2faf7dd96cd1deac1544d5f2b9
+-   Alternate Identifier: <doi:10.6073/pasta/edc4ab2faf7dd96cd1deac1544d5f2b9>
 -   Abstract: This dataset investigates the impact of shrubification on flowering phenology, reproductive success, and pollinator visitation rates in the alpine tundra community at Niwot Ridge, Colorado. The study spans three years and includes observations from shrub-influenced and open plots.
 
 ## Data and File Overview
