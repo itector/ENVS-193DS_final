@@ -30,6 +30,7 @@ library(janitor)
 library(ggeffects)
 library(performance)
 library(naniar)
+library(skimr)
 library(flextable)
 library(car)
 library(broom)
@@ -49,13 +50,23 @@ seed_count <- read_csv(here("data", "shrubstudy_seed_ctwt.ms.data.csv")) %>%
 ```
 
 ```{r}
-# create a data visualization of missing data in seed_count
-gg_miss_var(seed_count)
+ggplot(seed_count, aes(x = nr_seeds)) +
+  geom_histogram(bins = 17)
 ```
 
 ```{r}
-seed_count_subset <- seed_count %>% 
-  drop_na(dist_fr_shr, wt_seeds_mg, nr_seeds, nr_infl_coll)
+seed_count %>% 
+  select(!treatment) %>% 
+  ggpairs()
+```
+
+```{r}
+skim(seed_count)
+```
+
+```{r}
+seed_count_subset <- drop_na(seed_count) # %>% 
+  #drop_na(dist_fr_shr, wt_seeds_mg, nr_seeds, nr_infl_coll)
 ```
 
 ```{r}
@@ -80,10 +91,17 @@ seed_count_subset %>%
 ```
 
 ```{r}
+# make a new data set with relevant variables
+seed_count_rel <- seed_count %>% 
+  select(nr_seeds, treatment, species, total_nr_infl) %>% 
+  drop_na(nr_seeds, treatment, species, total_nr_infl)
+```
+
+```{r}
 # making a null model, which is represented by a one and we only want it from the plant_subset dataset
-null <- lm(nr_seeds ~ 1, data = seed_count_subset)
+null <- lm(nr_seeds ~ 1, data = seed_count_rel)
 # now we include all of the variables
-full <- lm(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count)
+full <- lm(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count_rel)
 ```
 
 ```{r}
@@ -100,9 +118,9 @@ check_heteroscedasticity(full)
 
 ```{r}
 # transform data by taking the log of it
-full_log <- lm(log(nr_seeds) ~ species + treatment + total_nr_infl, data = seed_count_subset)
+full_log <- lm(log(nr_seeds) ~ species + treatment + total_nr_infl, data = seed_count_rel)
 
-null_log <- lm(log(nr_seeds) ~ 1, data = seed_count)
+null_log <- lm(log(nr_seeds) ~ 1, data = seed_count_rel)
 
 # check transformed data for normality and const variance
 par(mfrow = c(2,2))
