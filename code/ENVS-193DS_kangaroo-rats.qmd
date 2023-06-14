@@ -65,8 +65,8 @@ skim(kangaroo_rats)
 ```
 
 ```{r}
-kangaroo_rats %>%
-  select(!mnd) %>%
+kangaroo_rats %>% 
+  select(!species) %>% 
   ggpairs()
 ```
 
@@ -74,23 +74,36 @@ Build Models
 
 ```{r}
 # linear model, we know this is wrong
-kangaroo1 <- lm(seeds ~ species + mnd + dir, data = kangaroo_rats)
+kangaroo1 <- lm(mnd ~ species + seeds + loc + dir, data = kangaroo_rats)
 
 # generalized linear model with Poisson distribution
-kangaroo2 <- glm(seeds ~ species + mnd + dir, data = kangaroo_rats, family = "poisson")
-kangaroo2.a <- glm(seeds ~ species + mnd + dir, data = kangaroo_rats, family = "poisson")
+kangaroo2 <- glm(mnd ~ species + seeds + loc + dir, data = kangaroo_rats, family = "poisson")
+kangaroo2.a <- glm(mnd ~ species + seeds + loc + dir, data = kangaroo_rats, family = "poisson")
 
 # generalized linear model with negative binomial distribution
-kangaroo3 <- glm.nb(seeds ~ species + mnd + dir, data = kangaroo_rats)
-kangaroo3.a <- glmmTMB(seeds ~ species + mnd + dir, data = kangaroo_rats, family = "nbinom2")
+kangaroo3 <- glm.nb(mnd ~ species + seeds + loc + dir, data = kangaroo_rats)
+kangaroo3.a <- glmmTMB(mnd ~ species + seeds + loc + dir, data = kangaroo_rats, family = "nbinom2")
 
 # generalized linear model with Poisson distribution and random effect of site
-kangaroo4 <- glmer(seeds ~ species + mnd + dir + (1|loc), data = kangaroo_rats, family = "poisson")
-kangaroo4.a <- glmmTMB(seeds ~ species + mnd + dir + (1|loc), data = kangaroo_rats, family = "poisson")
+kangaroo4 <- glmer(mnd ~ species + seeds + dir + (1|loc), data = kangaroo_rats, family = "poisson")
+kangaroo4.a <- glmmTMB(mnd ~ species + seeds + dir + (1|loc), data = kangaroo_rats, family = "poisson")
 
 # generalized linear model with negative binomial distribution and random effect of site
-kangaroo5 <- glmer.nb(seeds ~ species + mnd + dir + (1|loc), data = kangaroo_rats)
-kangaroo5.a <- glmmTMB(seeds ~ species + mnd + dir + (1|loc), data = kangaroo_rats, family = "nbinom2")
+kangaroo5 <- glmer.nb(mnd ~ species + seeds + dir + (1|loc), data = kangaroo_rats)
+kangaroo5.a <- glmmTMB(mnd ~ species + seeds + dir + (1|loc), data = kangaroo_rats, family = "nbinom2")
+```
+
+```{r}
+# check diagnostics
+plot(simulateResiduals(kangaroo1)) # bad
+
+plot(simulateResiduals(kangaroo2)) # bad
+
+plot(simulateResiduals(kangaroo3)) # ok?
+
+plot(simulateResiduals(kangaroo4)) # bad
+
+plot(simulateResiduals(kangaroo5)) # bad/ok?
 ```
 
 # Results
