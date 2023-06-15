@@ -53,41 +53,43 @@ library(corrplot)
 kangaroo_rats <- read_csv(here("data", "dat_for_prob1.csv")) %>% 
   # make the column names cleaner
   clean_names()
+
+# cleaning and wrangling
+data <- kangaroo_rats %>%
+   # remove rows with missing values
+  drop_na()   
 ```
 
-```{r}
+```{r missing-data-visualization}
+# check what variables are missing data
 gg_miss_var(kangaroo_rats)
+# there is nothing missing
 ```
 
-```{r}
+```{r skim-data}
+# skim the data
 skim(kangaroo_rats)
 ```
 
-```{r}
-# Cleaning and wrangling
-data <- kangaroo_rats %>%
-  drop_na()    # Remove rows with missing values
-
-# Assumption checks
-# Checking normality assumption
+```{r assumption-checks}
+# assumption checks
+# checking normality assumption (is it normally distributed?)
 shapiro.test(data$seeds)
 
-# Checking homogeneity of variances assumption
+# checking homogeneity of variances assumption
 leveneTest(seeds ~ loc, data = data)
+```
 
-# Statistical tests
-# One-way ANOVA
-anova_result <- aov(seeds ~ loc, data = data)
-summary(anova_result)
-
-# Post hoc test (Tukey's HSD)
+```{r statistical-checks}
+# statistical tests
+# post hoc test (Tukey's HSD)
 tukey_result <- TukeyHSD(anova_result)
 tukey_result
 
 # Null hypotheses
 # H0: There is no difference in seed counts between locations
 
-# Other tools for count (discrete) data:
+# other tools for count (discrete) data:
 # Kruskal-Wallis test (non-parametric alternative to ANOVA)
 kruskal.test(seeds ~ loc, data = data)
 ```
