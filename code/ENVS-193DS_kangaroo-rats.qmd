@@ -18,6 +18,8 @@ editor: visual
 
 ## Introduction
 
+Disturbance plays a vital biological role in shaping plant community structure, and small-scale disturbances caused by animals can increase heterogeneity and species diversity. Kangaroo rat (Dipodomys spectabilis) mounds are unique small-scale disturbances that support distinct plant communities compared to surrounding habitats (Guo). The seed bank, often overlooked in plant communities, is an important trait for plant species' persistence in unpredictable environments (Fitch). To understand the impact of kangaroo rat disturbances on plant communities in the Chihuahuan Desert grassland, we studied the composition of the seed bank for eight taxa on and off kangaroo rat mounds. Our objective was to determine if kangaroo rat mounds accumulate more seeds and exhibit different seed compositions compared to the adjacent grassland and our findings revealed that kangaroo rat mounds accumulated more seeds and supported different seed compositions, suggesting their role in promoting plant diversity and altering plant structure within communities (Koontz). Our null hypothesis is that the eight taxa will have seed banks that do not differ between mounds and off mounds and that mounds will not have high seed numbers of early successional plant species; our alternative hypothesis is that the eight taxa will have seed banks that differ between mounds and off mounds and that mounds will have high seed numbers of early successional plant species.
+
 ## Methods
 
 ```{r}
@@ -96,4 +98,10 @@ these are the results portion
 
 ## Works Cited
 
-this is the works cited portion for what we refe
+Fitch, Henry S. \"Habits and Economic Relationships of the Tulare Kangaroo Rat.\" *Journal of Mammalogy* 29, no. 1 (1948): 5--35. https://doi.org/10.2307/1375277.
+
+Guo, Q. Effects of bannertail kangaroo rat mounds on small-scale plant community structure. *Oecologia* **106**, 247--256 (1996). https://doi.org/10.1007/BF00328605
+
+Koontz, Terri, and Heather Simpson. \"The Composition of Seed Banks on Kangaroo Rat (Dipodomys Spectabilis) Mounds in a Chihuahuan Desert Grassland.\" ScienceDirect, 18 Apr. 2010, doi.org/10.1016/j.jaridenv.2010.03.008.
+
+\
