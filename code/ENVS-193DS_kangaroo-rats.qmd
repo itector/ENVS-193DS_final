@@ -65,8 +65,9 @@ data <- kangaroo_rats %>%
 gg_miss_var(kangaroo_rats)
 # there is nothing missing
 ```
+
 ::: {style="font-size: 90%; color: #787878;"}
-**Figure 1. Visualizing Missing Data.** Using \[gg_miss_var\] to evaluate missing data from data set, it is found that there is no missing data. 
+**Figure 1. Visualizing Missing Data.** Using \[gg_miss_var\] to evaluate missing data from data set, it is found that there is no missing data.
 :::
 
 ```{r skim-data}
@@ -89,13 +90,16 @@ leveneTest(seeds ~ loc, data = data)
 tukey_result <- TukeyHSD(anova_result)
 tukey_result
 
-# Null hypotheses
-# H0: There is no difference in seed counts between locations
+# one-way ANOVA
+anova_result <- aov(seeds ~ loc, data = data)
+summary(anova_result)
 
 # other tools for count (discrete) data:
 # Kruskal-Wallis test (non-parametric alternative to ANOVA)
 kruskal.test(seeds ~ loc, data = data)
 ```
+
+The summary statistics of the "seeds" variable in the "kangaroo_rats" dataset showed that there were no missing values, indicating a complete dataset. The variable had a mean seed count of 7.52, with a standard deviation of 38.1. The minimum seed count was -1.6, the first quartile was 0, the median was 0.1, the third quartile was 3, and the maximum seed count was 656. The histogram displayed a highly skewed distribution, with the majority of seed counts being concentrated at lower values. For the assumption checks, we first conducted a normality assumption check with the Shapiro-Wilk test. The Shapiro-Wilk test revealed that the "seeds" variable did not follow a normal distribution (W = 0.18134, p \< 2.2e-16). This deviation from normality suggested that parametric tests relying on normality assumptions may not be appropriate for this variable. Next we used Levene's test to assess the homogeneity of variances across different locations. The test indicated a significant difference in variances among the locations (F = 14.474, p \< 0.001). The violation of homogeneity of variances assumption suggested the need for caution when interpreting the results of subsequent statistical tests. For statistical tests, we first used a one-way ANOVA. The one-way ANOVA revealed a significant difference in seed counts among the different locations (F = 14.46, p \< 2.7e-09). The analysis indicated that the location factor had a significant effect on the seed counts of kangaroo rats. We also used a Post hoc test as a statistical test. Tukey's HSD test was employed to identify pairwise differences between locations. The test results showed significant differences in seed counts between locations B and D, B and E, and B and I (p \< 0.001). However, no significant differences were observed between locations D and E, D and I, and E and I (p \> 0.05). These findings suggest that some locations have significantly different seed counts compared to others. Lastly, we used a non-parametric alternative, the Kruskal-Wallis test as an alternative to ANOVA to evaluate the differences in seed counts among locations. The test indicated a significant difference in seed counts among locations (chi-squared = 21.932, df = 3, p = 6.738e-05). This result further supported the conclusion that the location factor had a significant impact on seed counts. Based on the statistical tests, the null hypothesis (H0) stating that there is no difference in seed counts between locations was rejected. The analyses provided evidence of significant variations in seed counts among the different locations. These results highlight the importance of considering location as a factor influencing seed counts in kangaroo rats. The findings suggest that the locations might have distinct ecological conditions or factors affecting seed availability, resulting in variations in the reproductive success of kangaroo rats.
 
 ## Results
 
