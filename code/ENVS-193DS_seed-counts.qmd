@@ -165,6 +165,37 @@ The results of doing a Chi Square test on the seedmod3 model (created with gener
 
 Then, based on seedmod3 simpler models were tested with predictors of only one of the variables instead of the full model (seedmod3) like seedmod_treatment. Comparing these models showed that the best fit model to the data based on the lowest AICc value was the seedmod3. The AICc value for the simple models (total_nr_infl = 1295.6, species = 1722.1, treatment = 1741.6) were all larger than the seedmod3's AICc value (1132.0). This showed that there was no simpler model for this data frame to predict the seed count based on the AICc values.
 
+### Visualization
+
+```{r results-vis}
+ggplot(data = seedmod3, aes(x = species, y = nr_seeds, fill = treatment)) +
+  geom_boxplot(position = position_dodge(width = 0.8), color = "black") +
+  labs(x = "Species", y = "Seed Count", title = "Distribution of Seed Count by Species and Treatment") +
+  theme_minimal()
+
+ggplot(data = seedmod3, aes(x = total_nr_infl, y = nr_seeds)) +
+  geom_point() +
+  labs(x = "Total Number of Inflorescences", y = "Seed Count", title = "Relationship between Seed Count and Total Number of Inflorescences") +
+  theme_minimal()
+```
+
+```{r table}
+table <- tidy(seedmod3, conf.int = TRUE) %>% 
+  # change the p-value numbers if they're really small using mutate
+  # change the estimates, st err, and t-stats to round to ___ digits
+  mutate(p.value = round(p.value, digits = 4),
+         estimate = round(estimate, digits = 4),
+         std.error = round(std.error, digits = 4)) %>% 
+  # make it into a flextable
+  flextable() %>% 
+  # fit it to the viewer
+  autofit()
+
+table
+```
+
+The table summarizes the statistical results for the predictors in the model. "treatmentshrub" has a significant negative effect (p = 0.016), while "speciesCARRUP" and "total_nr_infl" have significant positive effects (p \< 0.001). "speciesTRIDAS" also has a significant positive effect (p = 0.042). Other predictors do not show significant effects. The table provides key information on the relationships between predictors and seed count
+
 ## Works Cited
 
 1.  Filazzola, A., Liczner, A. R., Westphal, M., & Lortie, C. J. (2019). Shrubs indirectly increase desert seedbanks through facilitation of the plant community. PloS one, 14(4), e0215988. <https://doi.org/10.1371/journal.pone.0215988>
