@@ -1,5 +1,6 @@
 ---
 title: "ENVS-193DS_kangaroo-rats"
+author: Lena Hicks, Jasmine Toni, Izzy Tector
 format: 
   html:
     toc: true
@@ -13,11 +14,11 @@ execute:
 editor: visual
 ---
 
-# Kangaroo Rats
+# Problem 1. Kangaroo Rats
 
-# Introduction
+## Introduction
 
-# Methods
+## Methods
 
 ```{r}
 # should haves
@@ -89,10 +90,10 @@ tukey_result
 kruskal.test(seeds ~ loc, data = data)
 ```
 
-# Results
+## Results
 
 these are the results portion
 
-# Works Cited
+## Works Cited
 
 this is the works cited portion for what we refe
