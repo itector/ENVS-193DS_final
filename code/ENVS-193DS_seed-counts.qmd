@@ -23,7 +23,7 @@ In the realm of biological research, understanding the factors that influence se
 
 ## Methods
 
-```{r}
+```{r loading-packages}
 # should haves
 library(tidyverse)
 library(here)
@@ -48,31 +48,31 @@ library(lme4)
 library(glmmTMB)
 ```
 
-```{r}
+```{r loading-data}
 seed_count <- read_csv(here("data", "shrubstudy_seed_ctwt.ms.data.csv")) %>% 
   # make the column names cleaner
   clean_names()
 ```
 
-```{r}
+```{r data-vis}
 ggplot(seed_count, aes(x = nr_seeds)) +
   geom_histogram(bins = 17)+
   labs(x = "Seed Count", y = "Number of Data Samples Taken", caption = "Histogram displaying how many seeds were counted at each data sample. The x axis is\n the seed count and the y axis is amounted of data samples colleccted per each seed count.", hjust = 0.5)
 ```
 
-```{r}
+```{r pairs-plot}
 seed_count %>% 
   select(!species) %>% 
   ggpairs()
 ```
 
-```{r}
+```{r skim-data}
 skim(seed_count)
 ```
 
 ### Building Models
 
-```{r}
+```{r building-models}
 # linear model, we know this is wrong
 seedmod1 <- lm(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count)
 
@@ -93,7 +93,7 @@ seedmod5 <- glmer.nb(nr_seeds ~ species + total_nr_infl + (1|treatment), data = 
 seedmod5.a <- glmmTMB(nr_seeds ~ species + total_nr_infl + (1|treatment), data = seed_count, family = "nbinom2")
 ```
 
-```{r}
+```{r check-assumptions}
 # check diagnostics
 plot(simulateResiduals(seedmod1)) # bad
 
@@ -106,7 +106,7 @@ plot(simulateResiduals(seedmod4)) # bad
 plot(simulateResiduals(seedmod5)) # bad/ok?
 ```
 
-```{r}
+```{r AICc-assumptions}
 MuMIn::model.sel(seedmod1, seedmod2, seedmod3, seedmod4, seedmod5)
 ```
 
@@ -127,11 +127,37 @@ confint(seedmod3)
 r.squaredGLMM(seedmod3)
 ```
 
-```{r}
+```{r flextable}
 # model object in table
 seedmod3 %>% 
   as_flextable()
 ```
+
+```{r null-model-comparison}
+# Overall test of the model's significance
+null_model <- glm.nb(nr_seeds ~ 1, data = seed_count) 
+# Null model with only intercept
+anova(seedmod3, null_model, test = "Chisq")
+
+```
+
+```{r simple-model-vis}
+plot(ggpredict(seedmod3, terms = "treatment", back.transform = TRUE), add.data = TRUE)
+plot(ggpredict(seedmod3, terms = "species", back.transform = TRUE), add.data = TRUE)
+plot(ggpredict(seedmod3, terms = "total_nr_infl", back.transform = TRUE), add.data = TRUE)
+```
+
+```{r simpler-models}
+seedmod_treatment <- lm(nr_seeds ~ treatment, data = seed_count)
+seedmod_species <- lm(nr_seeds ~ species, data = seed_count)
+seedmod_total_nr_infl <- lm(nr_seeds ~ total_nr_infl, data = seed_count)
+```
+
+```{r AICc-simple-models}
+MuMIn::model.sel(seedmod3,null_model,seedmod_treatment,seedmod_species,seedmod_total_nr_infl)
+```
+
+All of the simpler models have a higher AIC value
 
 ## Results
 
