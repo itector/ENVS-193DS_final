@@ -13,11 +13,11 @@ execute:
 editor: visual
 ---
 
-# Problem 1. Kangaroo Rats
+# Kangaroo Rats
 
-## 1. Introduction
+# Introduction
 
-## 1. Methods
+# Methods
 
 ```{r}
 # should haves
@@ -39,6 +39,7 @@ library(broom)
 library(corrplot)
 library(AICcmodavg)
 library(GGally)
+library(skimr)
 # would be nice to have
 library(MuMIn)
 #library(equatiomatic)
@@ -52,11 +53,6 @@ kangaroo_rats <- read_csv(here("data", "dat_for_prob1.csv")) %>%
 ```
 
 ```{r}
-ggplot(kangaroo_rats, aes(x = seeds)) +
-  geom_histogram(bins = 10)
-```
-
-```{r}
 gg_miss_var(kangaroo_rats)
 ```
 
@@ -65,67 +61,38 @@ skim(kangaroo_rats)
 ```
 
 ```{r}
-kangaroo_rats %>% 
-  select(!species) %>% 
-  ggpairs()
+# Cleaning and wrangling
+data <- kangaroo_rats %>%
+  drop_na()    # Remove rows with missing values
+
+# Assumption checks
+# Checking normality assumption
+shapiro.test(data$seeds)
+
+# Checking homogeneity of variances assumption
+leveneTest(seeds ~ loc, data = data)
+
+# Statistical tests
+# One-way ANOVA
+anova_result <- aov(seeds ~ loc, data = data)
+summary(anova_result)
+
+# Post hoc test (Tukey's HSD)
+tukey_result <- TukeyHSD(anova_result)
+tukey_result
+
+# Null hypotheses
+# H0: There is no difference in seed counts between locations
+
+# Other tools for count (discrete) data:
+# Kruskal-Wallis test (non-parametric alternative to ANOVA)
+kruskal.test(seeds ~ loc, data = data)
 ```
 
-Build Models
-
-```{r}
-# linear model, we know this is wrong
-kangaroo1 <- lm(mnd ~ species + seeds + loc + dir, data = kangaroo_rats)
-
-# generalized linear model with Poisson distribution
-kangaroo2 <- glm(mnd ~ species + seeds + loc + dir, data = kangaroo_rats, family = "poisson")
-kangaroo2.a <- glm(mnd ~ species + seeds + loc + dir, data = kangaroo_rats, family = "poisson")
-
-# generalized linear model with negative binomial distribution
-kangaroo3 <- glm.nb(mnd ~ species + seeds + loc + dir, data = kangaroo_rats)
-kangaroo3.a <- glmmTMB(mnd ~ species + seeds + loc + dir, data = kangaroo_rats, family = "nbinom2")
-
-# generalized linear model with Poisson distribution and random effect of site
-kangaroo4 <- glmer(mnd ~ species + seeds + dir + (1|loc), data = kangaroo_rats, family = "poisson")
-kangaroo4.a <- glmmTMB(mnd ~ species + seeds + dir + (1|loc), data = kangaroo_rats, family = "poisson")
-
-# generalized linear model with negative binomial distribution and random effect of site
-kangaroo5 <- glmer.nb(mnd ~ species + seeds + dir + (1|loc), data = kangaroo_rats)
-kangaroo5.a <- glmmTMB(mnd ~ species + seeds + dir + (1|loc), data = kangaroo_rats, family = "nbinom2")
-```
-
-```{r}
-# check diagnostics
-plot(simulateResiduals(kangaroo1)) # bad
-
-plot(simulateResiduals(kangaroo2)) # bad
-
-plot(simulateResiduals(kangaroo3)) # ok?
-
-plot(simulateResiduals(kangaroo4)) # bad
-
-plot(simulateResiduals(kangaroo5)) # bad/ok?
-```
-
-## 1. Results
+# Results
 
 these are the results portion
 
-### 1. Works Cited
+# Works Cited
 
-# Problem 2. Seed Counts
-
-## 2. Introduction
-
-In the realm of biological research, understanding the factors that influence seed count is of great significance as it sheds light on the reproductive success and fitness of plant species. In the alpine tundra, results of climate change have included 'shrubification'- an increase in woody shrubs, which affects on the vegetative community are in need of inspection([Mod & Luoto, 2016](https://iopscience.iop.org/article/10.1088/1748-9326/11/12/124028/meta)). This analysis aims to investigate how seed count varies in relation to three key variables: plot type (shrub or open), plant species, and the total number of inflorescences, and to see if a simpler model explaining seed count can be derived. Previous studies have shown shrubs to increase seed bank count in desert areas and that different plant species display varying seed production patterns, where trade-offs may occur between larger seed mass and seed count, which are interesting points to compare to the alpine tundra environment we studied([Filazzola et. al., 2019](https://doi.org/10.1371/journal.pone.0215988); [Paul-Victor & Turnbull, 2009](https://doi.org/10.1371/journal.pone.0006917)). Our null hypothesis is that none of the variables observed, plot type, species, nor number of inflorescences, will have an effect on seed count, and our alternative hypothesis is that at least one of these variables will have a correlation with seed count.
-
-## 2. Methods
-
-## 2. Results
-
-### 2. Works Cited
-
-1.  Filazzola, A., Liczner, A. R., Westphal, M., & Lortie, C. J. (2019). Shrubs indirectly increase desert seedbanks through facilitation of the plant community. PloS one, 14(4), e0215988. https://doi.org/10.1371/journal.pone.0215988
-
-2.  Mod, H. K., & Luoto, M. (2016). Arctic shrubification mediates the impacts of warming climate on changes to tundra vegetation. Environmental Research Letters, 11(12). DOI: 10.1088/1748-9326/11/12/124028
-
-3.  Paul-Victor, C., & Turnbull, L. A. (2009). The effect of growth conditions on the seed size/number trade-off. PloS one, 4(9), e6917. https://doi.org/10.1371/journal.pone.0006917
+this is the works cited portion for what we refe
