@@ -1,6 +1,7 @@
 ---
 title: "ENVS-193DS_seed-counts"
 author: Lena Hicks, Jasmine Toni, Izzy Tector
+date: June 15 2023
 format: 
   html:
     toc: true
@@ -11,8 +12,6 @@ editor: visual
 execute: 
   message: false
   warning: false
-editor: visual
-editor: visual
 ---
 
 # Problem 2. Seed Counts
@@ -24,6 +23,7 @@ In the realm of biological research, understanding the factors that influence se
 ## Methods
 
 ```{r loading-packages}
+library(MASS) # have to read this in before tidyverse 
 # should haves
 library(tidyverse)
 library(here)
@@ -43,7 +43,6 @@ library(MuMIn)
 library(DHARMa)
 #library(equatiomatic)
 library(corrplot)
-library(MASS) # have to read this in before tidyverse 
 library(lme4)
 library(glmmTMB)
 ```
@@ -51,60 +50,105 @@ library(glmmTMB)
 ```{r loading-data}
 seed_count <- read_csv(here("data", "shrubstudy_seed_ctwt.ms.data.csv")) %>% 
   # make the column names cleaner
-  clean_names()
+  clean_names() %>% 
+  select(treatment, species, total_nr_infl, nr_infl_coll, nr_seeds)
 ```
 
 ```{r data-vis}
 ggplot(seed_count, aes(x = nr_seeds)) +
   geom_histogram(bins = 17)+
-  labs(x = "Seed Count", y = "Number of Data Samples Taken", caption = "Histogram displaying how many seeds were counted at each data sample. The x axis is\n the seed count and the y axis is amounted of data samples colleccted per each seed count.", hjust = 0.5)
+  labs(x = "Seed Count", y = "Number of Data Samples Taken", title = "Amount of Seeds Counted per Each Data Sample Taken", hjust = 0.5)
+```
+::: {style="font-size: 90%; color: #787878;"}
+**Figure 1. Seed Count per Data Sample visualization.** Histogram displaying how many seeds were counted at each data sample. The x axis is the seed count and the y axis is amounted of data samples collected per each seed count. Right-skewed distribution is observed, indicating many samples had little to no seeds, with some outliers of data samples having very high seed counts. 
+:::
+
+Checking Missing Data:
+```{r vis-missing-data}
+gg_miss_var(seed_count)
+```
+::: {style="font-size: 90%; color: #787878;"}
+**Figure 2. Visualizing Missing Data.** Checking visually the missing data and where it occurs. Seed count has the most missing data, with 106 samples missing. Inflorescence collected has 6 samples missing, and the rest of the data is not missing.
+:::
+
+```{r removing-missing-data}
+# creating subset of data with only total collected data included
+seed_subset <- seed_count %>% 
+  # dropping NA's from data set
+  drop_na(treatment, species, total_nr_infl, nr_infl_coll, nr_seeds)
 ```
 
+
 ```{r pairs-plot}
-seed_count %>% 
+seed_subset %>% 
   select(!species) %>% 
   ggpairs()
 ```
+::: {style="font-size: 90%; color: #787878;"}
+**Figure 3. Pairs Plot of Variables Relationships.** Pairs plot used to display the individual relationships between variables and their correlation to each other. Potentially positive linear relationship appears between all of the variables, each with high correlation above 0.9.
+:::
 
 ```{r skim-data}
-skim(seed_count)
+skim(seed_subset)
 ```
 
 ### Building Models
 
 ```{r building-models}
 # linear model, we know this is wrong
-seedmod1 <- lm(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count)
+seedmod1 <- lm(nr_seeds ~ treatment + species + total_nr_infl, data = seed_subset)
 
 # generalized linear model with Poisson distribution
-seedmod2 <- glm(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count, family = "poisson")
-seedmod2.a <- glm(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count, family = "poisson")
+seedmod2 <- glm(nr_seeds ~ treatment + species + total_nr_infl, data = seed_subset, family = "poisson")
+seedmod2.a <- glm(nr_seeds ~ treatment + species + total_nr_infl, data = seed_subset, family = "poisson")
 
 # generalized linear model with negative binomial distribution
-seedmod3 <- glm.nb(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count)
-seedmod3.a <- glmmTMB(nr_seeds ~ treatment + species + total_nr_infl, data = seed_count, family = "nbinom2")
+seedmod3 <- glm.nb(nr_seeds ~ treatment + species + total_nr_infl, data = seed_subset)
+seedmod3.a <- glmmTMB(nr_seeds ~ treatment + species + total_nr_infl, data = seed_subset, family = "nbinom2")
 
 # generalized linear model with Poisson distribution and random effect of site
-seedmod4 <- glmer(nr_seeds ~ species + total_nr_infl + (1|treatment), data = seed_count, family = "poisson")
-seedmod4.a <- glmmTMB(nr_seeds ~ species + total_nr_infl + (1|treatment), data = seed_count, family = "poisson")
+seedmod4 <- glmer(nr_seeds ~ species + total_nr_infl + (1|treatment), data = seed_subset, family = "poisson")
+seedmod4.a <- glmmTMB(nr_seeds ~ species + total_nr_infl + (1|treatment), data = seed_subset, family = "poisson")
 
 # generalized linear model with negative binomial distribution and random effect of site
-seedmod5 <- glmer.nb(nr_seeds ~ species + total_nr_infl + (1|treatment), data = seed_count)
-seedmod5.a <- glmmTMB(nr_seeds ~ species + total_nr_infl + (1|treatment), data = seed_count, family = "nbinom2")
+seedmod5 <- glmer.nb(nr_seeds ~ species + total_nr_infl + (1|treatment), data = seed_subset)
+seedmod5.a <- glmmTMB(nr_seeds ~ species + total_nr_infl + (1|treatment), data = seed_subset, family = "nbinom2")
 ```
 
-```{r check-assumptions}
+```{r check-assumptions-mod-1}
 # check diagnostics
 plot(simulateResiduals(seedmod1)) # bad
+```
+::: {style="font-size: 90%; color: #787878;"}
+**Figure 4. Assumptions Test of Model 1.** Dharma test of residuals for model 1. Model appears bad due to extreme deviation.
+:::
 
+```{r check-assumptions-mod-2}
 plot(simulateResiduals(seedmod2)) # bad
-
+```
+::: {style="font-size: 90%; color: #787878;"}
+**Figure 5. Assumptions Test of Model 2.** Dharma test of residuals for model 2. Model appears bad due to extreme deviation.
+:::
+```{r check-assumptions-mod-3}
 plot(simulateResiduals(seedmod3)) # ok?
+```
+::: {style="font-size: 90%; color: #787878;"}
+**Figure 6. Assumptions Test of Model 3.** Dharma test of residuals for model 3. Model has fairly straight line in Q-Q plot suggesting potential normality.
+:::
 
+```{r check-assumptions-mod-4}
 plot(simulateResiduals(seedmod4)) # bad
+```
+::: {style="font-size: 90%; color: #787878;"}
+**Figure 7. Assumptions Test of Model 4.** Dharma test of residuals for model 4. Model appears bad due to extreme deviation.
+:::
 
+```{r check-assumptions-mod-5}
 plot(simulateResiduals(seedmod5)) # bad/ok?
 ```
+::: {style="font-size: 90%; color: #787878;"}
+**Figure 8. Assumptions Test of Model 5.** Dharma test of residuals for model 5. Model appears okay, the data is nearing normality in Q-Q plot, but not best model prediction. 
+:::
 
 ```{r AICc-assumptions}
 MuMIn::model.sel(seedmod1, seedmod2, seedmod3, seedmod4, seedmod5)
@@ -130,27 +174,53 @@ r.squaredGLMM(seedmod3)
 ```{r flextable}
 # model object in table
 seedmod3 %>% 
-  as_flextable()
+  mutate(term = case_when(
+    term == "treatmentshrub" ~ "Shrub Plot",
+    term == "speciesCARRUP" ~ "Carex rupestris Species",
+    term == "speciesGEUROS" ~ "Geum rossii Species",
+    term == "speciesKOBMYO" ~ "Kobresia myosuroides Species",
+    term == "speciesMINOBT" ~ "Minuartia obtusiloba Species",
+    term == "speciesTRIDAS" ~ "Trifolium dasyphyllum Species",
+    term == "total_nr_infl" ~ "Inflorescence Made by Plant",
+    TRUE ~ term)) %>% 
+  as_flextable() 
 ```
 
 ```{r null-model-comparison}
 # Overall test of the model's significance
-null_model <- glm.nb(nr_seeds ~ 1, data = seed_count) 
+null_model <- glm.nb(nr_seeds ~ 1, data = seed_subset) 
 # Null model with only intercept
 anova(seedmod3, null_model, test = "Chisq")
-
 ```
 
-```{r simple-model-vis}
-plot(ggpredict(seedmod3, terms = "treatment", back.transform = TRUE), add.data = TRUE)
-plot(ggpredict(seedmod3, terms = "species", back.transform = TRUE), add.data = TRUE)
-plot(ggpredict(seedmod3, terms = "total_nr_infl", back.transform = TRUE), add.data = TRUE)
+```{r simple-model-vis-treatment}
+plot(ggpredict(seedmod3, terms = "treatment", back.transform = TRUE), add.data = TRUE) +
+  labs(title = "Seed Count Using Only Treatment as Predictor:\n Shrub vs Open(control)", x = "Treatment Type", y = "Seed Count", hjust = 0.5)
 ```
+::: {style="font-size: 90%; color: #787878;"}
+**Figure 9. Treatment as Simple Model for Seed Count.** Visually assessing using a simple model of only treatment type predictor of seed count. Overall, both shrub and control(open) are more clustered towards lower seed counts, but open appears to be a little more evenly spread in having higher seed counts.
+:::
+
+```{r simple-model-vis-species}
+plot(ggpredict(seedmod3, terms = "species", back.transform = TRUE), add.data = TRUE)+
+  labs(title = "Seed Count Using Only Species as Predictor", x = "Species", y = "Seed Count")
+```
+::: {style="font-size: 90%; color: #787878;"}
+**Figure 10. Species as Simple Model for Seed Count.** Visually assessing using simple model of just species as predictor to seed count. Species appears to have large effect on seed count with high variabilty shown amongst different species.  
+:::
+
+```{r simple-model-vis-inflorescence}
+plot(ggpredict(seedmod3, terms = "total_nr_infl", back.transform = TRUE), add.data = TRUE)+
+  labs(title = "Inflorescences Counted as Simple Predictor\n to Seed Count", x = "Inflorescences Counted", y = "Seed Count")
+```
+::: {style="font-size: 90%; color: #787878;"}
+**Figure 11. Inflorescence as Simple Model for Seed Count** Visually assessing using simple model of just inflorescence counted as predictor to seed count. Exponential relationship is displayed, with increased inflorescence count having a drastic effect on seed count.
+:::
 
 ```{r simpler-models}
-seedmod_treatment <- lm(nr_seeds ~ treatment, data = seed_count)
-seedmod_species <- lm(nr_seeds ~ species, data = seed_count)
-seedmod_total_nr_infl <- lm(nr_seeds ~ total_nr_infl, data = seed_count)
+seedmod_treatment <- lm(nr_seeds ~ treatment, data = seed_subset)
+seedmod_species <- lm(nr_seeds ~ species, data = seed_subset)
+seedmod_total_nr_infl <- lm(nr_seeds ~ total_nr_infl, data = seed_subset)
 ```
 
 ```{r AICc-simple-models}
