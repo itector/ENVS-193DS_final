@@ -1,6 +1,7 @@
 ---
 title: "ENVS-193DS_kangaroo-rats"
 author: Lena Hicks, Jasmine Toni, Izzy Tector
+date: June 15, 2023
 format: 
   html:
     toc: true
@@ -11,7 +12,6 @@ editor: visual
 execute: 
   message: false
   warning: false
-editor: visual
 ---
 
 # Problem 1. Kangaroo Rats
@@ -65,6 +65,9 @@ data <- kangaroo_rats %>%
 gg_miss_var(kangaroo_rats)
 # there is nothing missing
 ```
+::: {style="font-size: 90%; color: #787878;"}
+**Figure 1. Visualizing Missing Data.** Using \[gg_miss_var\] to evaluate missing data from data set, it is found that there is no missing data. 
+:::
 
 ```{r skim-data}
 # skim the data
@@ -100,10 +103,10 @@ these are the results portion
 
 ## Works Cited
 
-Fitch, Henry S. \"Habits and Economic Relationships of the Tulare Kangaroo Rat.\" *Journal of Mammalogy* 29, no. 1 (1948): 5--35. https://doi.org/10.2307/1375277.
+Fitch, Henry S. "Habits and Economic Relationships of the Tulare Kangaroo Rat." *Journal of Mammalogy* 29, no. 1 (1948): 5--35. https://doi.org/10.2307/1375277.
 
 Guo, Q. Effects of bannertail kangaroo rat mounds on small-scale plant community structure. *Oecologia* **106**, 247--256 (1996). https://doi.org/10.1007/BF00328605
 
-Koontz, Terri, and Heather Simpson. \"The Composition of Seed Banks on Kangaroo Rat (Dipodomys Spectabilis) Mounds in a Chihuahuan Desert Grassland.\" ScienceDirect, 18 Apr. 2010, doi.org/10.1016/j.jaridenv.2010.03.008.
+Koontz, Terri, and Heather Simpson. "The Composition of Seed Banks on Kangaroo Rat (Dipodomys Spectabilis) Mounds in a Chihuahuan Desert Grassland." ScienceDirect, 18 Apr. 2010, doi.org/10.1016/j.jaridenv.2010.03.008.
 
 \
