@@ -161,6 +161,10 @@ All of the simpler models have a higher AIC value
 
 ## Results
 
+The results of doing a Chi Square test on the seedmod3 model (created with generalized linear model with negative binomial distribution) it was found that the seedmod3 was the best model of the five that were tested as the Chi-square value using a significance value of 0.05 for the seedmod3 was 178.6161 as seen in the ANOVA table. The degrees of freedom were 181 for the null model and 174 for the full model, the p-value for the full model was indicated to be \<0.001 in the ANOVA table.
+
+Then, based on seedmod3 simpler models were tested with predictors of only one of the variables instead of the full model (seedmod3) like seedmod_treatment. Comparing these models showed that the best fit model to the data based on the lowest AICc value was the seedmod3. The AICc value for the simple models (total_nr_infl = 1295.6, species = 1722.1, treatment = 1741.6) were all larger than the seedmod3's AICc value (1132.0). This showed that there was no simpler model for this data frame to predict the seed count based on the AICc values.
+
 ## Works Cited
 
 1.  Filazzola, A., Liczner, A. R., Westphal, M., & Lortie, C. J. (2019). Shrubs indirectly increase desert seedbanks through facilitation of the plant community. PloS one, 14(4), e0215988. <https://doi.org/10.1371/journal.pone.0215988>
