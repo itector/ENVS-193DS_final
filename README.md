@@ -2,7 +2,12 @@
 
 This README.txt file was generated on 2023-06-12 by LENA HICKS, IZZY TECTOR, and JASMINE TONI
 
-Link to repository:
+Link to repository found [here](https://github.com/itector/ENVS-193DS_final)
+
+Link to rendered Kangaroo Rats document found [here]()
+
+Link to rendered Seed Counts document found [here]()
+
 
 # Effects of Kangaroo Rat Mounds on Seed Banks of Grass and Shrublands at the Sevilleta National Wildlife Refuge, New Mexico (2001)
 
@@ -28,9 +33,9 @@ This README.txt file provides information about the data package "Effects of Kan
 
 -   data: Holds the data files or data sets, in this case the NTL LTER data file, that is used to generate the R project.
 
--   ENVS-193DS_homework-04_Toni-Jasmine.Rproj: This is the entire project and can be accessed from the folder on my computer to open up the project in R studio.
+-   ENVS-193DS_final.Rproj: This is the entire project and can be accessed from the folder on my computer to open up the project in R studio.
 
--   ES 193DS Homework 4.qmd: The quarto document with the code for the project on it. It incorporates the data to create working code.
+-   ENVS-193DS_kangaroo-rats.qmd: The quarto document with the code for the project on it. It incorporates the data to create working code.
 
 -   README.md: This file is used to give an overview of this project and contains details about general information, accessibility, data, and other specifics.
 
@@ -73,9 +78,9 @@ This data package contains data on individual and community flowering phenology,
 
 -   data: Holds the data files or data sets, in this case the NTL LTER data file, that is used to generate the R project.
 
--   ENVS-193DS_homework-04_Toni-Jasmine.Rproj: This is the entire project and can be accessed from the folder on my computer to open up the project in R studio.
+-   ENVS-193DS_final.Rproj: This is the entire project and can be accessed from the folder on my computer to open up the project in R studio.
 
--   ES 193DS Homework 4.qmd: The quarto document with the code for the project on it. It incorporates the data to create working code.
+-   ENVS-193DS_seed-counts.qmd: The quarto document with the code for the project on it. It incorporates the data to create working code.
 
 -   README.md: This file is used to give an overview of this project and contains details about general information, accessibility, data, and other specifics.\
 
