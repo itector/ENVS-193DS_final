@@ -174,15 +174,6 @@ r.squaredGLMM(seedmod3)
 ```{r flextable}
 # model object in table
 seedmod3 %>% 
-  mutate(term = case_when(
-    term == "treatmentshrub" ~ "Shrub Plot",
-    term == "speciesCARRUP" ~ "Carex rupestris Species",
-    term == "speciesGEUROS" ~ "Geum rossii Species",
-    term == "speciesKOBMYO" ~ "Kobresia myosuroides Species",
-    term == "speciesMINOBT" ~ "Minuartia obtusiloba Species",
-    term == "speciesTRIDAS" ~ "Trifolium dasyphyllum Species",
-    term == "total_nr_infl" ~ "Inflorescence Made by Plant",
-    TRUE ~ term)) %>% 
   as_flextable() 
 ```
 
@@ -233,7 +224,9 @@ All of the simpler models have a higher AIC value
 
 The results of doing a Chi Square test on the seedmod3 model (created with generalized linear model with negative binomial distribution) it was found that the seedmod3 was the best model of the five that were tested as the Chi-square value using a significance value of 0.05 for the seedmod3 was 178.6161 as seen in the ANOVA table. The degrees of freedom were 181 for the null model and 174 for the full model, the p-value for the full model was indicated to be \<0.001 in the ANOVA table.
 
-Then, based on seedmod3 simpler models were tested with predictors of only one of the variables instead of the full model (seedmod3) like seedmod_treatment. Comparing these models showed that the best fit model to the data based on the lowest AICc value was the seedmod3. The AICc value for the simple models (total_nr_infl = 1295.6, species = 1722.1, treatment = 1741.6) were all larger than the seedmod3's AICc value (1132.0). This showed that there was no simpler model for this data frame to predict the seed count based on the AICc values.
+Then, based on seedmod3, simpler models were tested with predictors of only one of the variables instead of the full model (seedmod3) like seedmod_treatment. Comparing these models showed that the best fit model to the data based on the lowest AICc value was the seedmod3. The AICc value for the simple models (total_nr_infl = 1295.6, species = 1722.1, treatment = 1741.6) were all larger than the seedmod3's AICc value (1132.0). This showed that there was no simpler model for this data frame to predict the seed count based on the AICc values.
+
+These results indicated that seed count is significantly affected by plot type, species, and number of inflorescence. When these three variables are at play together, we are most able to predict seed type. Open plots were associated with more seed counts than shrub plots, as well as species Carrup and Tridas had much higher seed counts than other species. Total number of inflorescence also had a positive relationship with seed count, increasing mutually. Our results allow us to reject our null hypothesis that none of the variables would affect seed count, instead all had an impact. In an effort to see if any simpler models existed that could predict seed count, like only plot type, species, or number of inflorescence, but none of the models were better than the model that accounted for all the variables as the predictors. This tells us that all these variables should be accounted for in strategic planning for plant reproductive success, and that the ideal would be using an open plot, with either the Carrup or Tridas species, and having a higher number of inflorescence to have the highest seed count. The findings that shrub plots were less successful for seed counts may be cause for remedies to the 'shrubification' ocurring in the alpine tundra in order for overall plant community success to persevere. 
 
 ### Visualization
 
