@@ -118,7 +118,7 @@ ggplot(kangaroo_rats, aes(x = loc, y = seeds)) +
 ```
 
 ::: {style="font-size: 90%; color: #787878;"}
-**Figure 1. Relationship between location and Seeds** Scatter plot depicting the relationship between the location of kangaroo rat mounds and the total number of seeds. Each data point represents a mound location, with the x-axis representing the location and the y-axis representing the total seed count. The points are shown in a steel blue color, highlighting the variability in seed numbers across different mound locations.
+**Figure 1. Relationship between location and Seeds.** Scatter plot depicting the relationship between the location of kangaroo rat mounds and the total number of seeds. Each data point represents a mound location, with the x-axis representing the location and the y-axis representing the total seed count. The points are shown in a steel blue color, highlighting the variability in seed numbers across different mound locations.
 :::
 
 ```{r table}
@@ -126,6 +126,9 @@ anova_result <- aov(seeds ~ loc, data = data)
 
 anova_result
 ```
+::: {style="font-size: 90%; color: #787878;"}
+**Table 1. ANOVA table.** The table presents the sum of squares, degrees of freedom, and residuals for the terms included in the model. The residual standard error is reported as 37.61676, representing the average deviation of the observed values from the fitted model.
+:::
 
 ### Interpretation of Results
 

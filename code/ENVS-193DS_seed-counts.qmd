@@ -180,12 +180,6 @@ confint(seedmod3)
 r.squaredGLMM(seedmod3)
 ```
 
-```{r flextable}
-# model object in table
-seedmod3 %>% 
-  as_flextable() 
-```
-
 ```{r null-model-comparison}
 # Overall test of the model's significance
 null_model <- glm.nb(nr_seeds ~ 1, data = seed_subset) 
@@ -221,6 +215,7 @@ plot(ggpredict(seedmod3, terms = "total_nr_infl", back.transform = TRUE), add.da
 :::
 
 ```{r simpler-models}
+# create models with only one variable as the predictor to test if a simpler model will accurately predict seed count
 seedmod_treatment <- lm(nr_seeds ~ treatment, data = seed_subset)
 seedmod_species <- lm(nr_seeds ~ species, data = seed_subset)
 seedmod_total_nr_infl <- lm(nr_seeds ~ total_nr_infl, data = seed_subset)
@@ -239,6 +234,7 @@ Then, based on seedmod3, simpler models were tested with predictors of only one 
 ### Visualization
 
 ```{r results-vis}
+# create a ggplot with species and treatment as predictors of seed count
 ggplot(data = seedmod3, aes(x = species, y = nr_seeds, fill = treatment)) +
   geom_boxplot(position = position_dodge(width = 0.8), color = "black") +
   labs(x = "Species", y = "Seed Count", title = "Distribution of Seed Count by Species and Treatment") +
@@ -246,10 +242,11 @@ ggplot(data = seedmod3, aes(x = species, y = nr_seeds, fill = treatment)) +
 ```
 
 ::: {style="font-size: 90%; color: #787878;"}
-**Figure 1. Distribution of Seed Count by Species and Treatment** Boxplot showing the distribution of seed count by species and treatment. The x-axis represents different species, the y-axis represents seed count, and the fill color represents treatment (shrub or open).
+**Figure 12. Distribution of Seed Count by Species and Treatment** Boxplot showing the distribution of seed count by species and treatment. The x-axis represents different species, the y-axis represents seed count, and the fill color represents treatment (shrub or open).
 :::
 
 ```{r results-vis-2}
+# show the relationship of total.nr.infl and seeds
 ggplot(data = seedmod3, aes(x = total_nr_infl, y = nr_seeds)) +
   geom_point() +
   labs(x = "Total Number of Inflorescences", y = "Seed Count", title = "Relationship between Seed Count and Total Number of Inflorescences") +
@@ -257,10 +254,10 @@ ggplot(data = seedmod3, aes(x = total_nr_infl, y = nr_seeds)) +
 ```
 
 ::: {style="font-size: 90%; color: #787878;"}
-**Figure 2. Relationship between Seed Count and Total Number of Influorescences** Scatter plot depicting the relationship between seed count and the total number of inflorescence. The x-axis represents the total number of inflorescence, and the y-axis represents seed count.
+**Figure 13. Relationship between Seed Count and Total Number of Influorescences** Scatter plot depicting the relationship between seed count and the total number of inflorescence. The x-axis represents the total number of inflorescence, and the y-axis represents seed count.
 :::
 
-```{r table}
+```{r}
 table <- tidy(seedmod3, conf.int = TRUE) %>% 
   # change the p-value numbers if they're really small using mutate
   # change the estimates, st err, and t-stats to round to ___ digits
