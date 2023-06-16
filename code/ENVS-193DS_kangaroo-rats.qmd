@@ -106,9 +106,9 @@ The summary statistics of the "seeds" variable in the "kangaroo_rats" dataset sh
 
 ## Results
 
-these are the results portion
+From conducting a one way ANOVA test, Tukey's HSD test, and a Kruskal-Wallis test on the data collected, a significant difference in seed counts among locations was found. This implied the differing micro-habitats within kangaroo rat mounds had a significant impact on seed counts, which could result in variations in species distribution patterns across the grassland. The locations with higher seed counts may provide more favorable conditions in their soil characteristics, moisture levels, or nutrient availability. The presence of kangaroo rats and their mounds can influence seed dispersal patterns, facilitating the movement of seeds across the landscape and affecting the establishment and persistence of plant populations. The varying micro-habitats having such a significant impact on seed count should be accounted for in comprehending the ecological dynamics of the Chihuahuan Desert grassland or any other ecosystem where kangaroo rats are present. It allows us to recognize the complex interactions between species and how they shape the structure and functioning of ecosystems. This knowledge can aid in conservation efforts, land management practices, and the preservation of biodiversity within these habitats.
 
-## Works Cited
+\## Works Cited
 
 Fitch, Henry S. "Habits and Economic Relationships of the Tulare Kangaroo Rat." *Journal of Mammalogy* 29, no. 1 (1948): 5--35. https://doi.org/10.2307/1375277.
 
