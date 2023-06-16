@@ -59,14 +59,17 @@ ggplot(seed_count, aes(x = nr_seeds)) +
   geom_histogram(bins = 17)+
   labs(x = "Seed Count", y = "Number of Data Samples Taken", title = "Amount of Seeds Counted per Each Data Sample Taken", hjust = 0.5)
 ```
+
 ::: {style="font-size: 90%; color: #787878;"}
-**Figure 1. Seed Count per Data Sample visualization.** Histogram displaying how many seeds were counted at each data sample. The x axis is the seed count and the y axis is amounted of data samples collected per each seed count. Right-skewed distribution is observed, indicating many samples had little to no seeds, with some outliers of data samples having very high seed counts. 
+**Figure 1. Seed Count per Data Sample visualization.** Histogram displaying how many seeds were counted at each data sample. The x axis is the seed count and the y axis is amounted of data samples collected per each seed count. Right-skewed distribution is observed, indicating many samples had little to no seeds, with some outliers of data samples having very high seed counts.
 :::
 
 Checking Missing Data:
+
 ```{r vis-missing-data}
 gg_miss_var(seed_count)
 ```
+
 ::: {style="font-size: 90%; color: #787878;"}
 **Figure 2. Visualizing Missing Data.** Checking visually the missing data and where it occurs. Seed count has the most missing data, with 106 samples missing. Inflorescence collected has 6 samples missing, and the rest of the data is not missing.
 :::
@@ -78,12 +81,12 @@ seed_subset <- seed_count %>%
   drop_na(treatment, species, total_nr_infl, nr_infl_coll, nr_seeds)
 ```
 
-
 ```{r pairs-plot}
 seed_subset %>% 
   select(!species) %>% 
   ggpairs()
 ```
+
 ::: {style="font-size: 90%; color: #787878;"}
 **Figure 3. Pairs Plot of Variables Relationships.** Pairs plot used to display the individual relationships between variables and their correlation to each other. Potentially positive linear relationship appears between all of the variables, each with high correlation above 0.9.
 :::
@@ -119,6 +122,7 @@ seedmod5.a <- glmmTMB(nr_seeds ~ species + total_nr_infl + (1|treatment), data =
 # check diagnostics
 plot(simulateResiduals(seedmod1)) # bad
 ```
+
 ::: {style="font-size: 90%; color: #787878;"}
 **Figure 4. Assumptions Test of Model 1.** Dharma test of residuals for model 1. Model appears bad due to extreme deviation.
 :::
@@ -126,12 +130,15 @@ plot(simulateResiduals(seedmod1)) # bad
 ```{r check-assumptions-mod-2}
 plot(simulateResiduals(seedmod2)) # bad
 ```
+
 ::: {style="font-size: 90%; color: #787878;"}
 **Figure 5. Assumptions Test of Model 2.** Dharma test of residuals for model 2. Model appears bad due to extreme deviation.
 :::
+
 ```{r check-assumptions-mod-3}
 plot(simulateResiduals(seedmod3)) # ok?
 ```
+
 ::: {style="font-size: 90%; color: #787878;"}
 **Figure 6. Assumptions Test of Model 3.** Dharma test of residuals for model 3. Model has fairly straight line in Q-Q plot suggesting potential normality.
 :::
@@ -139,6 +146,7 @@ plot(simulateResiduals(seedmod3)) # ok?
 ```{r check-assumptions-mod-4}
 plot(simulateResiduals(seedmod4)) # bad
 ```
+
 ::: {style="font-size: 90%; color: #787878;"}
 **Figure 7. Assumptions Test of Model 4.** Dharma test of residuals for model 4. Model appears bad due to extreme deviation.
 :::
@@ -146,8 +154,9 @@ plot(simulateResiduals(seedmod4)) # bad
 ```{r check-assumptions-mod-5}
 plot(simulateResiduals(seedmod5)) # bad/ok?
 ```
+
 ::: {style="font-size: 90%; color: #787878;"}
-**Figure 8. Assumptions Test of Model 5.** Dharma test of residuals for model 5. Model appears okay, the data is nearing normality in Q-Q plot, but not best model prediction. 
+**Figure 8. Assumptions Test of Model 5.** Dharma test of residuals for model 5. Model appears okay, the data is nearing normality in Q-Q plot, but not best model prediction.
 :::
 
 ```{r AICc-assumptions}
@@ -188,6 +197,7 @@ anova(seedmod3, null_model, test = "Chisq")
 plot(ggpredict(seedmod3, terms = "treatment", back.transform = TRUE), add.data = TRUE) +
   labs(title = "Seed Count Using Only Treatment as Predictor:\n Shrub vs Open(control)", x = "Treatment Type", y = "Seed Count", hjust = 0.5)
 ```
+
 ::: {style="font-size: 90%; color: #787878;"}
 **Figure 9. Treatment as Simple Model for Seed Count.** Visually assessing using a simple model of only treatment type predictor of seed count. Overall, both shrub and control(open) are more clustered towards lower seed counts, but open appears to be a little more evenly spread in having higher seed counts.
 :::
@@ -196,14 +206,16 @@ plot(ggpredict(seedmod3, terms = "treatment", back.transform = TRUE), add.data =
 plot(ggpredict(seedmod3, terms = "species", back.transform = TRUE), add.data = TRUE)+
   labs(title = "Seed Count Using Only Species as Predictor", x = "Species", y = "Seed Count")
 ```
+
 ::: {style="font-size: 90%; color: #787878;"}
-**Figure 10. Species as Simple Model for Seed Count.** Visually assessing using simple model of just species as predictor to seed count. Species appears to have large effect on seed count with high variabilty shown amongst different species.  
+**Figure 10. Species as Simple Model for Seed Count.** Visually assessing using simple model of just species as predictor to seed count. Species appears to have large effect on seed count with high variabilty shown amongst different species.
 :::
 
 ```{r simple-model-vis-inflorescence}
 plot(ggpredict(seedmod3, terms = "total_nr_infl", back.transform = TRUE), add.data = TRUE)+
   labs(title = "Inflorescences Counted as Simple Predictor\n to Seed Count", x = "Inflorescences Counted", y = "Seed Count")
 ```
+
 ::: {style="font-size: 90%; color: #787878;"}
 **Figure 11. Inflorescence as Simple Model for Seed Count** Visually assessing using simple model of just inflorescence counted as predictor to seed count. Exponential relationship is displayed, with increased inflorescence count having a drastic effect on seed count.
 :::
@@ -218,15 +230,11 @@ seedmod_total_nr_infl <- lm(nr_seeds ~ total_nr_infl, data = seed_subset)
 MuMIn::model.sel(seedmod3,null_model,seedmod_treatment,seedmod_species,seedmod_total_nr_infl)
 ```
 
-All of the simpler models have a higher AIC value
-
 ## Results
 
 The results of doing a Chi Square test on the seedmod3 model (created with generalized linear model with negative binomial distribution) it was found that the seedmod3 was the best model of the five that were tested as the Chi-square value using a significance value of 0.05 for the seedmod3 was 178.6161 as seen in the ANOVA table. The degrees of freedom were 181 for the null model and 174 for the full model, the p-value for the full model was indicated to be \<0.001 in the ANOVA table.
 
 Then, based on seedmod3, simpler models were tested with predictors of only one of the variables instead of the full model (seedmod3) like seedmod_treatment. Comparing these models showed that the best fit model to the data based on the lowest AICc value was the seedmod3. The AICc value for the simple models (total_nr_infl = 1295.6, species = 1722.1, treatment = 1741.6) were all larger than the seedmod3's AICc value (1132.0). This showed that there was no simpler model for this data frame to predict the seed count based on the AICc values.
-
-These results indicated that seed count is significantly affected by plot type, species, and number of inflorescence. When these three variables are at play together, we are most able to predict seed type. Open plots were associated with more seed counts than shrub plots, as well as species Carrup and Tridas had much higher seed counts than other species. Total number of inflorescence also had a positive relationship with seed count, increasing mutually. Our results allow us to reject our null hypothesis that none of the variables would affect seed count, instead all had an impact. In an effort to see if any simpler models existed that could predict seed count, like only plot type, species, or number of inflorescence, but none of the models were better than the model that accounted for all the variables as the predictors. This tells us that all these variables should be accounted for in strategic planning for plant reproductive success, and that the ideal would be using an open plot, with either the Carrup or Tridas species, and having a higher number of inflorescence to have the highest seed count. The findings that shrub plots were less successful for seed counts may be cause for remedies to the 'shrubification' ocurring in the alpine tundra in order for overall plant community success to persevere. 
 
 ### Visualization
 
@@ -235,12 +243,22 @@ ggplot(data = seedmod3, aes(x = species, y = nr_seeds, fill = treatment)) +
   geom_boxplot(position = position_dodge(width = 0.8), color = "black") +
   labs(x = "Species", y = "Seed Count", title = "Distribution of Seed Count by Species and Treatment") +
   theme_minimal()
+```
 
+::: {style="font-size: 90%; color: #787878;"}
+**Figure 1. Distribution of Seed Count by Species and Treatment** Boxplot showing the distribution of seed count by species and treatment. The x-axis represents different species, the y-axis represents seed count, and the fill color represents treatment (shrub or open).
+:::
+
+```{r results-vis-2}
 ggplot(data = seedmod3, aes(x = total_nr_infl, y = nr_seeds)) +
   geom_point() +
   labs(x = "Total Number of Inflorescences", y = "Seed Count", title = "Relationship between Seed Count and Total Number of Inflorescences") +
   theme_minimal()
 ```
+
+::: {style="font-size: 90%; color: #787878;"}
+**Figure 2. Relationship between Seed Count and Total Number of Influorescences** Scatter plot depicting the relationship between seed count and the total number of inflorescence. The x-axis represents the total number of inflorescence, and the y-axis represents seed count.
+:::
 
 ```{r table}
 table <- tidy(seedmod3, conf.int = TRUE) %>% 
@@ -257,7 +275,13 @@ table <- tidy(seedmod3, conf.int = TRUE) %>%
 table
 ```
 
-The table summarizes the statistical results for the predictors in the model. "treatmentshrub" has a significant negative effect (p = 0.016), while "speciesCARRUP" and "total_nr_infl" have significant positive effects (p \< 0.001). "speciesTRIDAS" also has a significant positive effect (p = 0.042). Other predictors do not show significant effects. The table provides key information on the relationships between predictors and seed count
+::: {style="font-size: 90%; color: #787878;"}
+**Table 1. Statistical results for variables as predictor of seed count** The table summarizes the statistical results for the predictors in the model. "treatmentshrub" has a significant negative effect (p = 0.016), while "speciesCARRUP" and "total_nr_infl" have significant positive effects (p \< 0.001). "speciesTRIDAS" also has a significant positive effect (p = 0.042). Other predictors do not show significant effects. The table provides key information on the relationships between predictors and seed count
+:::
+
+### Interpretation of Results
+
+These results indicated that seed count is significantly affected by plot type, species, and number of inflorescence. When these three variables are at play together, we are most able to predict seed type. Open plots were associated with more seed counts than shrub plots, as well as species Carrup and Tridas had much higher seed counts than other species. Total number of inflorescence also had a positive relationship with seed count, increasing mutually. Our results allow us to reject our null hypothesis that none of the variables would affect seed count, instead all had an impact. In an effort to see if any simpler models existed that could predict seed count, like only plot type, species, or number of inflorescence, but none of the models were better than the model that accounted for all the variables as the predictors. This tells us that all these variables should be accounted for in strategic planning for plant reproductive success, and that the ideal would be using an open plot, with either the Carrup or Tridas species, and having a higher number of inflorescence to have the highest seed count. The findings that shrub plots were less successful for seed counts may be cause for remedies to the 'shrubification' ocurring in the alpine tundra in order for overall plant community success to persevere.
 
 ## Works Cited
 
