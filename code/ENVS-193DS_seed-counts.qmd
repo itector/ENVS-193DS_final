@@ -211,7 +211,7 @@ plot(ggpredict(seedmod3, terms = "total_nr_infl", back.transform = TRUE), add.da
 ```
 
 ::: {style="font-size: 90%; color: #787878;"}
-**Figure 11. Inflorescence as Simple Model for Seed Count** Visually assessing using simple model of just inflorescence counted as predictor to seed count. Exponential relationship is displayed, with increased inflorescence count having a drastic effect on seed count.
+**Figure 11. Inflorescence as Simple Model for Seed Count.** Visually assessing using simple model of just inflorescence counted as predictor to seed count. Exponential relationship is displayed, with increased inflorescence count having a drastic effect on seed count.
 :::
 
 ```{r simpler-models}
@@ -242,7 +242,7 @@ ggplot(data = seedmod3, aes(x = species, y = nr_seeds, fill = treatment)) +
 ```
 
 ::: {style="font-size: 90%; color: #787878;"}
-**Figure 12. Distribution of Seed Count by Species and Treatment** Boxplot showing the distribution of seed count by species and treatment. The x-axis represents different species, the y-axis represents seed count, and the fill color represents treatment (shrub or open).
+**Figure 12. Distribution of Seed Count by Species and Treatment.** Boxplot showing the distribution of seed count by species and treatment. The x-axis represents different species, the y-axis represents seed count, and the fill color represents treatment (shrub or open).
 :::
 
 ```{r results-vis-2}
@@ -254,7 +254,7 @@ ggplot(data = seedmod3, aes(x = total_nr_infl, y = nr_seeds)) +
 ```
 
 ::: {style="font-size: 90%; color: #787878;"}
-**Figure 13. Relationship between Seed Count and Total Number of Influorescences** Scatter plot depicting the relationship between seed count and the total number of inflorescence. The x-axis represents the total number of inflorescence, and the y-axis represents seed count.
+**Figure 13. Relationship between Seed Count and Total Number of Inflorescence.** Scatter plot depicting the relationship between seed count and the total number of inflorescence. The x-axis represents the total number of inflorescence, and the y-axis represents seed count.
 :::
 
 ```{r}
@@ -273,7 +273,7 @@ table
 ```
 
 ::: {style="font-size: 90%; color: #787878;"}
-**Table 1. Statistical results for variables as predictor of seed count** The table summarizes the statistical results for the predictors in the model. "treatmentshrub" has a significant negative effect (p = 0.016), while "speciesCARRUP" and "total_nr_infl" have significant positive effects (p \< 0.001). "speciesTRIDAS" also has a significant positive effect (p = 0.042). Other predictors do not show significant effects. The table provides key information on the relationships between predictors and seed count
+**Table 1. Statistical results for variables as predictor of seed count.** The table summarizes the statistical results for the predictors in the model. "treatmentshrub" has a significant negative effect (p = 0.016), while "speciesCARRUP" and "total_nr_infl" have significant positive effects (p \< 0.001). "speciesTRIDAS" also has a significant positive effect (p = 0.042). Other predictors do not show significant effects. The table provides key information on the relationships between predictors and seed count
 :::
 
 ### Interpretation of Results
