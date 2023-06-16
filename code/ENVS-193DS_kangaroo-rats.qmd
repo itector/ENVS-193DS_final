@@ -126,6 +126,7 @@ anova_result <- aov(seeds ~ loc, data = data)
 
 anova_result
 ```
+
 ::: {style="font-size: 90%; color: #787878;"}
 **Table 1. ANOVA table.** The table presents the sum of squares, degrees of freedom, and residuals for the terms included in the model. The residual standard error is reported as 37.61676, representing the average deviation of the observed values from the fitted model.
 :::

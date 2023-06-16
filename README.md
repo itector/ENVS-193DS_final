@@ -4,9 +4,9 @@ This README.txt file was generated on 2023-06-12 by LENA HICKS, IZZY TECTOR, and
 
 Link to repository found [here](https://github.com/itector/ENVS-193DS_final)
 
-Link to rendered Kangaroo Rats document found [here]()
+Link to rendered Kangaroo Rats document found [here](https://itector.github.io/ENVS-193DS_final/code/ENVS-193DS_kangaroo-rats.html)
 
-Link to rendered Seed Counts document found [here]()
+Link to rendered Seed Counts document found [here](https://itector.github.io/ENVS-193DS_final/code/ENVS-193DS_seed-counts.html)
 
 
 # Effects of Kangaroo Rat Mounds on Seed Banks of Grass and Shrublands at the Sevilleta National Wildlife Refuge, New Mexico (2001)
